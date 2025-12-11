@@ -61,7 +61,7 @@ dat3 <- dat2 %>%
   tidyr::drop_na() %>%
   droplevels()
 
-dat3 <- dat3 |>
+dat3 <- dat3 %>%
   mutate(
     weekday  = factor(weekday, ordered = FALSE),
     tod_bin  = factor(tod_bin, ordered = FALSE),
@@ -74,19 +74,19 @@ lm_ext <- lm(duration_hours ~ request_type + weekday + tod_bin, data = dat3)
 summary(lm_ext)
 
 # Make coef into plot labels
-coef_df <- broom::tidy(lm_ext, conf.int = TRUE) |>
-  dplyr::filter(term != "(Intercept)") |>
+coef_df <- broom::tidy(lm_ext, conf.int = TRUE) %>%
+  dplyr::filter(term != "(Intercept)") %>%
   dplyr::mutate(group = dplyr::case_when(stringr::str_starts(term, "request_type") ~ "Request type",
                                          stringr::str_starts(term, "weekday") ~ "Weekday",
                                          stringr::str_starts(term, "tod_bin") ~ "Time of day"),
-                level = term |>
-                  stringr::str_remove("^request_type") |>
-                  stringr::str_remove("^weekday") |>
+                level = term %>%
+                  stringr::str_remove("^request_type") %>%
+                  stringr::str_remove("^weekday") %>%
                   stringr::str_remove("^tod_bin"))
 
 # Request type only
-coef_req <- coef_df |> 
-  dplyr::filter(group == "Request type") |>
+coef_req <- coef_df %>% 
+  dplyr::filter(group == "Request type") %>%
   dplyr::mutate(level = forcats::fct_reorder(level, estimate))
 
 ggplot(coef_req, aes(x = estimate, y = level)) +
@@ -98,7 +98,7 @@ ggplot(coef_req, aes(x = estimate, y = level)) +
   theme_minimal(base_size = 12)
 
 # Time of day only
-coef_tod <- coef_df |> dplyr::filter(group == "Time of day") |>
+coef_tod <- coef_df %>% dplyr::filter(group == "Time of day") %>%
   dplyr::mutate(level = forcats::fct_reorder(level, estimate))
 
 ggplot(coef_tod, aes(x = estimate, y = level)) +
@@ -110,7 +110,7 @@ ggplot(coef_tod, aes(x = estimate, y = level)) +
   theme_minimal(base_size = 12)
 
 # Weekday only
-coef_wday <- coef_df |> dplyr::filter(group == "Weekday") |>
+coef_wday <- coef_df %>% dplyr::filter(group == "Weekday") %>%
   dplyr::mutate(level = forcats::fct_reorder(level, estimate))
 
 ggplot(coef_wday, aes(x = estimate, y = level)) +
@@ -129,3 +129,23 @@ plot(lm_ext, which = 1)
 
 # Q-Q
 plot(lm_ext, which = 2)
+
+# Summary stats
+dat3 %>%
+  summarise(
+    n_requests = n(),
+    dur_min    = min(duration_hours, na.rm = TRUE),
+    dur_q1     = quantile(duration_hours, 0.25, na.rm = TRUE),
+    dur_median = median(duration_hours, na.rm = TRUE),
+    dur_q3     = quantile(duration_hours, 0.75, na.rm = TRUE),
+    dur_max    = max(duration_hours, na.rm = TRUE)) %>%
+  kable(caption = "Sample size and closure-time summary (hours) after cleaning.")
+
+kable(count(cleaned, request_type, sort = TRUE),
+      caption = "Requests by request type (top 10 types kept, remaining lumped to 'Other').")
+
+kable(count(cleaned, weekday),
+      caption = "Requests by weekday (day of opening).")
+
+kable(count(cleaned, tod_bin),
+      caption = "Requests by time of day (based on opening hour).")
