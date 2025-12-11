@@ -32,7 +32,7 @@ README.md
 
 ## External Sources
 
-[https://data.ca.gov/dataset/registered-nurse-shortage-areas-in-california](https://data.sfgov.org/City-Infrastructure/NBC-FY2018-2019-311-SC-Calls/pk4y-mgyw/about_data) # for data
+https://data.sfgov.org/City-Infrastructure/NBC-FY2018-2019-311-SC-Calls/pk4y-mgyw/about_data # for data
 
 https://www.rdocumentation.org/ # for coding help
 
