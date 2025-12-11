@@ -1,17 +1,43 @@
-# MATH261A-project-template
-Example project repository for MATH 261A.
+# MATH261A-Project-2-SF-311
 
-## Data 
+**Author:** Andrew Young  
+**Course:** MATH261A  
+**Submission date:** 2025-12-10
 
-**Example statement:** Data used in this project is obtained from [San Francisco Open Data](https://data.sfgov.org) who provide the data under the [Open Data Commons Public Domain Dedication and License](https://opendatacommons.org/licenses/pddl/1-0/).
+## Overview
 
-## External Resources
+This project analyzes San Francisco 311 *Street & Sidewalk Cleaning (SSC)* requests (2018–2019) to ask:
+Do request type, weekday, and time-of-day help explain how long a request remains open?  
+The outcome is `duration_hours` (close time − open time, in hours). I fit an OLS multiple
+linear regression with categorical predictors for `request_type`, `weekday`, and `tod_bin`
+(Night/Morning/Afternoon/Evening). 
 
-**Example statement:** The final report and code were written by [your name], but the following resources were used for preliminary research:
+## Repository structure
 
-* LLM-based chatbots (ex. ChatGPT Edu)
-* Online forums (ex. Stack Overflow).
+analysis/
+- Math261A-Project2-Analysis.R                      # data import, cleaning, model fit, plots
 
-# Acknowledgments
+data/
+- raw_sf311.csv      # raw data file
+- cleaned_sf311.csv  # cleaned data file
 
-This project repository is based on the template provided by [Rohan Alexander](https://github.com/RohanAlexander/starter_folder/tree/main).
+paper/
+- Math261A-Project2-Paper.Rmd                       # paper source
+- Math261A-Project2-Paper.pdf                       # knitted paper 
+- references.bib                                    # BibTeX references
+
+README.md
+
+.gitignore
+
+## External Sources
+
+[https://data.ca.gov/dataset/registered-nurse-shortage-areas-in-california](https://data.sfgov.org/City-Infrastructure/NBC-FY2018-2019-311-SC-Calls/pk4y-mgyw/about_data) # for data
+
+https://www.rdocumentation.org/ # for coding help
+
+https://stackoverflow.com/questions # for coding help
+
+## License statement
+
+The dataset is provided via the California Open Data Portal, which lists a license for each resource on the landing page.
