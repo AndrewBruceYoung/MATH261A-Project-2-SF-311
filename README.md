@@ -40,4 +40,4 @@ https://stackoverflow.com/questions # for coding help
 
 ## License statement
 
-The dataset is provided via the California Open Data Portal, which lists a license for each resource on the landing page.
+The dataset is provided via the DataSF Open Data Portal, which lists a license for each resource on the landing page.
